@@ -7,10 +7,11 @@ module OmniAuth
 
       option :name, 'yandex_money'
 
-      option :client_options, {:site => 'https://sp-money.yandex.ru'}
+      option :client_options, {:site => 'https://m.sp-money.yandex.ru'}
 
 
       option :authorize_options, [:scope, :response_type]
+      option :provider_ignores_state, true
 
       uid { @parsed_uid ||= raw_info['account'] } #4100123456789
     
@@ -37,7 +38,6 @@ module OmniAuth
       def authorize_params
         super.tap do |params|
           params[:scope] ||= DEFAULT_SCOPE
-          params[:response_type] ||= 'code'
         end
       end
 

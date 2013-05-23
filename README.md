@@ -36,7 +36,7 @@ Usage
 
 Add it to your Gemfile:
 
-    gem 'omniauth-yandex-money`
+    gem 'omniauth-yandex-money', :git => 'git://github.com/biomancer/omniauth-yandex-money.git'
 
 In a Rails app, add `config/initializers/omniauth.rb`:
 
@@ -44,7 +44,17 @@ In a Rails app, add `config/initializers/omniauth.rb`:
       provider :yandex_money, "CLIENT_ID", "CLIENT_SECRET"
     end
 
+Yandex provides two urls for auth request - full (https://sp-money.yandex.ru) and mobile (https://m.sp-money.yandex.ru). By default mobile is used as it is more versatile. To use full version specify additional parameter as follows:
+
+    Rails.application.config.middleware.use OmniAuth::Builder do
+      provider :yandex_money, "CLIENT_ID", "CLIENT_SECRET", client_options: {:site => 'https://sp-money.yandex.ru'}
+    end
+
 To get client id and secret, register your Yandex.Money application as described [here] (http://api.yandex.com/money/doc/dg/tasks/register-client.xml).
+
+***Important!***
+Note that redirect uri field must exactly match the omniauth redirect uri, something like 'https://my-host.com/auth/yandex_money/callback' or auth request will result invalid_request error.
+
 CLIENT_SECRET is optional and its requirement is defined when you register Yandex.Money application.
 
 ## Known issues
